@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extrastyle %}
+<style>
+    .box-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .addBtn {
+        font-size: 30px;
+    }
+
+
+/* The Modal (background) */
+.modal {
+    margin: 0 auto;
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+  margin: 0 auto;
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+  margin: 0 auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation */
+.modal-content, #caption {
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)}
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  .modal-content {
+    width: 100%;
+  }
+}
+
+</style>
+    {% load filename %}
+{% endblock %}
+{% block content %}
+<div style="padding: 10px; background-color: white" class="box">
+    <div class="box-header">
+        <h3 style="margin: 0">Photos</h3>
+        <a class="addBtn" href="/add_image">+</a>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body table-responsive no-padding">
+        <table class="table table-hover">
+            <tbody>
+            <tr>
+                <th>Label</th>
+                <th>Width</th>
+                <th>Height</th>
+                <th>Type</th>
+                <th>Image File</th>
+                <th>Delete</th>
+            </tr>
+            {% for image in images %}
+            <tr>
+                <td><a href="javascript:showImage('{{ image.image_file.url }}', '{{ image.label }}');">{{image.label}}</a></td>
+                <td>{{image.image_file.width}}</td>
+                <td>{{image.image_file.height}}</td>
+                <td>{{image.type}}</td>
+                <td>{{image.image_file|filename}}</td>
+                <td><a href="/delete_image/{{image.id}}/"><img width="32px" src="{% static "icons/trash.svg" %}" alt="Trash"></a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    <div id="myModal" class="modal">
+        <span onclick="close()" class="close">&times;</span>
+        <div>
+            <img class="modal-content" id="img01">
+        </div>
+        <div id="caption"></div>
+    </div>
+    </div>
+    <!-- /.box-body -->
+</div>
+
+    <script>
+
+    function showImage(image_path, image_label){
+
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+
+        modal.style.display = "block";
+        modalImg.src = image_path;
+        modalImg.alt = "image not found"
+        captionText.innerHTML = image_label;
+
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+    }
+
+    </script>
+{% endblock %}
+

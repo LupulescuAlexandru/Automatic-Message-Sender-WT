@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extrastyle %}
+<style>
+    .box-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .addBtn {
+        font-size: 30px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div style="padding: 10px; background-color: white" class="box">
+    <div class="box-header">
+        <h3 style="margin: 0">Lists</h3>
+        <a class="addBtn" href="/create_list">+</a>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body table-responsive no-padding">
+        <table class="table table-hover">
+            <tbody>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Reason</th>
+                <th>Type</th>
+                <th>Delete</th>
+            </tr>
+            {% for list in lists %}
+            <tr style="cursor: pointer" onclick="window.location='/update_list/{{list.id}}/';">
+                <td>{{list.name}}</td>
+                <td>{{list.date}}</td>
+                <td>{{list.reason}}</td>
+                <td>{{list.type}}</td>
+                <td><a href="/delete_list/{{list.id}}/"><img width="32px" src="{% static "icons/trash.svg" %}" alt="Trash"></a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+{% endblock %}
+

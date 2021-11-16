@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extrastyle %}
+<style>
+    .box-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .addBtn {
+        font-size: 30px;
+    }
+</style>
+    {% load filename %}
+{% endblock %}
+{% block content %}
+<div style="padding: 10px; background-color: white" class="box">
+    <div class="box-header">
+        <h3 style="margin: 0">Messages</h3>
+        <a class="addBtn" href="/choose_type">+</a>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body table-responsive no-padding">
+        <table class="table table-hover">
+            <tbody>
+            <tr>
+                <th>Title</th>
+                <th>Differentiate by gender</th>
+                <th>Fields file</th>
+                <th>Delete</th>
+            </tr>
+            {% for message in messages %}
+            <tr style="cursor: pointer" onclick="window.location='/view_message/{{message.id}}/';">
+                <td>{{message.title}}</td>
+                <td>{{message.diff_gender}}</td>
+                <td>{{message.csv_fields|filename}}</td>
+                <td><a href="/delete_message/{{message.id}}/"><img width="32px" src="{% static "icons/trash.svg" %}" alt="Trash"></a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+{% endblock %}
+

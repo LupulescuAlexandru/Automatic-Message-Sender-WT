@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block extrastyle %}
+<style>
+    .create-list-form {
+        width: 40%;
+        padding: 25px 35px;
+        border-radius: 10px;
+        background-color: white;
+    }
+
+    #message_female {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+    <div class="d-flex flex-column create-list-form">
+        <h3 style="text-align:center;">Create TEXT Message</h3>
+        <form action="" method="post" enctype="multipart/form-data">
+            <div id="list-form" class="d-flex flex-column">
+                {% csrf_token %}
+                {% for field in form %}
+                {% if field.name == 'diff_gender' %}
+                <label>{{field.label}}</label>
+                <input type="checkbox" name="diff_gender" onclick="onCheck();" id="id_diff_gender">
+                {% else %}
+                <div id="{{field.name}}">
+                    <label>{{field.label}}</label>
+                    {{ field }}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function onCheck() {
+        let checkBox = document.getElementById("id_diff_gender");
+        let message_female = document.getElementById("message_female");
+        if (checkBox.checked === true) {
+            message_female.style.display = "contents";
+        } else {
+            message_female.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock %}
+
